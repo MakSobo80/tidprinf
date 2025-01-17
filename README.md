@@ -1,4 +1,4 @@
-Poker w Pygame
+Poker w PyGame
 
 ## Przegląd
 Ten projekt to gra pokerowa zaimplementowana przy użyciu biblioteki PyGame w Pythonie. Gra pozwala graczom na grę w standardowego pokera przeciwko komputerowym przeciwnikom.
