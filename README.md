@@ -51,7 +51,7 @@ Ten projekt jest licencjonowany na licencji MIT. Zobacz plik `LICENSE` po szczeg
 ## Zasady
 Zasady pokera są oparte na [tym artykule](https://en.wikipedia.org/wiki/Poker).
 
-## Autor
+## Autorzy
 - [Maksymilian Sobolewski](https://github.com/MakSobo80)
 - [Ariuna Wejner](https://github.com/AriunaW)
 - [Paweł Laskowski](https://github.com/PaPci00)
