@@ -11,7 +11,7 @@ Ten projekt to gra pokerowa zaimplementowana przy użyciu biblioteki PyGame w Py
 
 ## Wymagania
 - Python 3.x
-- Pygame
+- PyGame
 
 ## Instalacja
 1. Sklonuj repozytorium:
