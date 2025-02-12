@@ -59,5 +59,7 @@ const handleRoomEvents = (socket, data) => {
             member.send(JSON.stringify({ type: "room-deleted", room: data.room }));
         });
         delete rooms[data.room];
+    } else if (data.type === "get-rooms") {
+        socket.send(JSON.stringify({ type: "rooms", rooms: rooms.map((r, k) => {k: r.members.length}) }));
     }
 }
