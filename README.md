@@ -46,7 +46,7 @@ Ten projekt to gra pokerowa zaimplementowana przy użyciu biblioteki PyGame w Py
 Ten projekt jest licencjonowany na licencji MIT.
 
 ## Zasady
-Zasady pokera są oparte na [tym artykule](https://pl.wikipedia.org/wiki/Texas_Hold%E2%80%99em).
+Zasady pokera są oparte na <a href="https://pl.wikipedia.org/wiki/Texas_Hold%E2%80%99em" target="_blank">tym artykule</a>.
 
 ##
 
