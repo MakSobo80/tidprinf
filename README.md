@@ -56,3 +56,5 @@ Zasady pokera są oparte na <a href="https://pl.wikipedia.org/wiki/Texas_Hold%E2
 - [Paweł Laskowski](https://github.com/PaPci00)
 - [Jędrzej Majchrzak](https://github.com/Jedmajc)
 
+## Kontakt z deweloperami
+Skontaktujesz się z nami pod adresem: fl0r3x5@o2.pl
