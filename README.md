@@ -1,17 +1,18 @@
 # Poker w PyGame
 
-## Przegląd
-Ten projekt to gra pokerowa zaimplementowana przy użyciu biblioteki PyGame w Pythonie. Gra pozwala graczom na grę w standardowego pokera przeciwko komputerowym przeciwnikom.
+## Opis projektu
+Ten projekt to gra pokerowa zaimplementowana przy użyciu biblioteki PyGame w Pythonie. Gra pozwala graczom na grę w standardowego pokera online.
 
-## Funkcje
-- Tryb dla jednego gracza przeciwko przeciwnikom AI
+## Funkcjonalność
 - Standardowe zasady pokera
 - Graficzny interfejs użytkownika przy użyciu Pygame
-- Efekty dźwiękowe i animacje
+- Tworzenie i dołączanie do pokojów gry
+- Tryb gry online z innymi graczami
 
 ## Wymagania
 - Python 3.x
 - PyGame
+- Windows 10+
 
 ## Instalacja
 1. Sklonuj repozytorium:
@@ -32,26 +33,24 @@ Ten projekt to gra pokerowa zaimplementowana przy użyciu biblioteki PyGame w Py
     ```sh
     python main.py
     ```
-1. Postępuj zgodnie z instrukcjami na ekranie, aby grać w grę.
+2. Postępuj zgodnie z instrukcjami na ekranie, aby grać w grę.
 
 ## Struktura projektu
 - `main.py`: Główny punkt wejścia do gry.
 - `game.py`: Zawiera logikę gry i zasady.
 - `player.py`: Zarządza informacjami i działaniami gracza.
-- `ai.py`: Implementuje przeciwników AI.
 - `network.py`: Zarządza komunikacją z serwerem.
 - `assets/`: Zawiera obrazy, dźwięki i inne zasoby używane w grze.
 
-## Wkład
-Wkłady są mile widziane! Proszę rozwidlić repozytorium i przesłać pull request.
-
 ## Licencja
-Ten projekt jest licencjonowany na licencji MIT. Zobacz plik `LICENSE` po szczegóły.
+Ten projekt jest licencjonowany na licencji MIT.
 
 ## Zasady
-Zasady pokera są oparte na [tym artykule](https://en.wikipedia.org/wiki/Poker).
+Zasady pokera są oparte na [tym artykule](https://pl.wikipedia.org/wiki/Texas_Hold%E2%80%99em).
 
-## Autor
+##
+
+## Autorzy
 - [Maksymilian Sobolewski](https://github.com/MakSobo80)
 - [Ariuna Wejner](https://github.com/AriunaW)
 - [Paweł Laskowski](https://github.com/PaPci00)
