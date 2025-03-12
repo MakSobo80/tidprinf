@@ -4,6 +4,7 @@ const wss = new WebSocket.Server({ port: 8080 });
 rooms = {};
 
 wss.on("connection", (socket) => {
+    console.log(`Socket ${socket._socket.remoteAddress} connected.`);
     socket.on("message", (message) => {
         const data = JSON.parse(message);
         if (data.type.includes("room")) {
@@ -20,53 +21,101 @@ wss.on("connection", (socket) => {
 
 const handleRoomEvents = (socket, data) => {
     if (data.type === "create-room") {
-        if (rooms[data.room]) {
-            socket.send(JSON.stringify({ type: "error", message: "Room already exists" }));
-            console.log(`Socket ${socket.remoteAddress} tried to create room ${data.room}, but it already exists.`);
-            return;
+        for (const room in rooms) {
+            if (room.includes(socket)) {
+                socket.send(JSON.stringify({ type: "error", message: "You are already in a room, leave it to join another one" }));
+                console.log(`Socket ${socket._socket.remoteAddress} tried to create a room, but is already in a room.`);
+                return;
+            }
         }
-        rooms[data.room] = {members: [socket]};
-        socket.send(JSON.stringify({ type: "room-created", room: data.room }));
-        console.log(`Socket ${socket.remoteAddress} created room ${data.room}.`);
+
+
+        let room = Math.floor(Math.random() * 900000) + 100000;
+        while (!rooms[room]) {
+            room = Math.floor(Math.random() * 900000) + 100000
+        }
+
+        rooms[room] = {members: [socket]};
+        socket.send(JSON.stringify({ type: "room-created", room: room }));
+        console.log(`Socket ${socket._socket.remoteAddress} created room ${room}.`);
     } else if (data.type === "join-room") {
-        if (!rooms[data.roomName]) {
+        for (const room in rooms) {
+            if (room.includes(socket)) {
+                socket.send(JSON.stringify({ type: "error", message: "You are already in a room, leave it to join another one" }));
+                console.log(`Socket ${socket._socket.remoteAddress} tried to join a room, but is already in a room.`);
+                return;
+            }
+        }
+
+        if (!rooms[data.room]) {
             socket.send(JSON.stringify({ type: "error", message: "Room does not exist" }));
-            console.log(`Socket ${socket.remoteAddress} tried to join room ${data.room}, but it does not exist.`);
+            console.log(`Socket ${socket._socket.remoteAddress} tried to join room ${data.room}, but it does not exist.`);
             return;
         }
         rooms[data.room].push(socket);
         socket.send(JSON.stringify({ type: "room-joined", room: data.room }));
-        console.log(`Socket ${socket.remoteAddress} joined room ${data.room}.`);
+        console.log(`Socket ${socket._socket.remoteAddress} joined room ${data.room}.`);
     } else if (data.type === "leave-room") {
-        if (!rooms[data.roomName]) {
-            socket.send(JSON.stringify({ type: "error", message: "Room does not exist" }));
-            console.log(`Socket ${socket.remoteAddress} tried to leave room ${data.room}, but it does not exist.`);
+        let inARoom = false;
+        let room = "";
+        rooms.forEach((v, i) => {
+            if (v.members.includes(socket)) {
+                inARoom = true;
+                room = rooms.keys()[i];
+            }
+        });
+
+        if (!inARoom) {
+            socket.send(JSON.stringify({ type: "error", message: "You are not in a room" }));
+            console.log(`Socket ${socket._socket.remoteAddress} tried to leave a room, but is not in a room.`);
             return;
         }
-        rooms[data.room].members = rooms[data.room].members.filter((member) => member !== socket);
-        socket.send(JSON.stringify({ type: "room-left", room: data.room }));
-        console.log(`Socket ${socket.remoteAddress} left room ${data.room}.`);
 
-        if(rooms[data.room].members.length <= 0) {
-            delete rooms[data.room];
+        if (!rooms[room]) {
+            socket.send(JSON.stringify({ type: "error", message: "Room does not exist" }));
+            console.log(`Socket ${socket._socket.remoteAddress} tried to leave room ${room}, but it does not exist.`);
+            return;
+        }
+        rooms[room].members = rooms[room].members.filter((member) => member !== socket);
+        socket.send(JSON.stringify({ type: "room-left", room: room }));
+        console.log(`Socket ${socket._socket.remoteAddress} left room ${room}.`);
+
+        if(rooms[room].members.length <= 0) {
+            delete rooms[room];
+            console.log(`Room ${room} was deleted because it had no members.`);
         }
     } else if (data.type === "delete-room") {
-        if (!rooms[data.roomName]) {
-            socket.send(JSON.stringify({ type: "error", message: "Room does not exist" }));
-            console.log(`Socket ${socket.remoteAddress} tried to delete room ${data.room}, but it does not exist.`);
-            return;
-        }
-
-        if (rooms[data.room].members[0] !== socket) {
-            socket.send(JSON.stringify({ type: "error", message: "Only the room creator can delete the room" }));
-            console.log(`Socket ${socket.remoteAddress} tried to delete room ${data.room}, but it is not the creator.`);
-            return;
-        }
-
-        rooms[data.room].members.forEach((member) => {
-            member.send(JSON.stringify({ type: "room-deleted", room: data.room }));
+        let inARoom = false;
+        let room = "";
+        rooms.forEach((v, i) => {
+            if (v.members.includes(socket)) {
+                inARoom = true;
+                room = rooms.keys()[i];
+            }
         });
-        delete rooms[data.room];
-        console.log(`Socket ${socket.remoteAddress} deleted room ${data.room}.`);
+
+        if (!inARoom) {
+            socket.send(JSON.stringify({ type: "error", message: "You are not in a room" }));
+            console.log(`Socket ${socket._socket.remoteAddress} tried to delete a room, but is not in a room.`);
+            return;
+        }
+
+        if (!rooms[room]) {
+            socket.send(JSON.stringify({ type: "error", message: "Room does not exist" }));
+            console.log(`Socket ${socket._socket.remoteAddress} tried to delete room ${room}, but it does not exist.`);
+            return;
+        }
+
+        if (rooms[room].members[0] !== socket) {
+            socket.send(JSON.stringify({ type: "error", message: "Only the room creator can delete the room" }));
+            console.log(`Socket ${socket._socket.remoteAddress} tried to delete room ${room}, but it is not the creator.`);
+            return;
+        }
+
+        rooms[room].members.forEach((member) => {
+            member.send(JSON.stringify({ type: "room-deleted", room: room }));
+        });
+        delete rooms[room];
+        console.log(`Socket ${socket._socket.remoteAddress} deleted room ${room}.`);
     }
 }
