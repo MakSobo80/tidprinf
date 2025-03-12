@@ -16,7 +16,7 @@ wss.on("connection", (socket) => {
     });
 
     socket.on("close", () => {
-        socket.send({ type: "disconnected", message: "Connection closed" });
+        // socket.send({ type: "disconnected", message: "Connection closed" });
         console.log(`Socket ${socket._socket.remoteAddress} disconnected.`);
     });
 });
@@ -24,7 +24,7 @@ wss.on("connection", (socket) => {
 const handleRoomEvents = (socket, data) => {
     if (data.type === "create-room") {
         for (const room in rooms) {
-            if (room.includes(socket)) {
+            if (rooms[room].members.includes(socket)) {
                 socket.send(JSON.stringify({ type: "error", message: "You are already in a room, leave it to join another one" }));
                 console.log(`Socket ${socket._socket.remoteAddress} tried to create a room, but is already in a room.`);
                 return;
@@ -33,7 +33,7 @@ const handleRoomEvents = (socket, data) => {
 
 
         let room = Math.floor(Math.random() * 900000) + 100000;
-        while (!rooms[room]) {
+        while (rooms[room]) {
             room = Math.floor(Math.random() * 900000) + 100000
         }
 
@@ -42,7 +42,7 @@ const handleRoomEvents = (socket, data) => {
         console.log(`Socket ${socket._socket.remoteAddress} created room ${room}.`);
     } else if (data.type === "join-room") {
         for (const room in rooms) {
-            if (room.includes(socket)) {
+            if (room.members.includes(socket)) {
                 socket.send(JSON.stringify({ type: "error", message: "You are already in a room, leave it to join another one" }));
                 console.log(`Socket ${socket._socket.remoteAddress} tried to join a room, but is already in a room.`);
                 return;
