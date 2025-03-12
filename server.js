@@ -4,6 +4,7 @@ const wss = new WebSocket.Server({ port: 8080 });
 rooms = {};
 
 wss.on("connection", (socket) => {
+    socket.send(JSON.stringify({ type: "connected" }));
     console.log(`Socket ${socket._socket.remoteAddress} connected.`);
     socket.on("message", (message) => {
         const data = JSON.parse(message);
@@ -15,7 +16,7 @@ wss.on("connection", (socket) => {
     });
 
     socket.on("close", () => {
-        socket.send({ type: "error", message: "Connection closed" });
+        socket.send({ type: "disconnected", message: "Connection closed" });
         console.log(`Socket ${socket._socket.remoteAddress} disconnected.`);
     });
 });
