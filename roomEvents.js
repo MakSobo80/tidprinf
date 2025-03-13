@@ -40,12 +40,6 @@ const handleRoomEvents = (socket, data) => {
             return;
         }
 
-        if (!getRoom(room)) {
-            socket.send(JSON.stringify({ type: "error", message: "Room does not exist" }));
-            console.log(`Socket ${socket._socket.remoteAddress} tried to leave room ${room}, but it does not exist.`);
-            return;
-        }
-
         removeMember(room, socket);
         socket.send(JSON.stringify({ type: "room-left" }));
         console.log(`Socket ${socket._socket.remoteAddress} left room ${room}.`);
@@ -55,12 +49,6 @@ const handleRoomEvents = (socket, data) => {
         if (!room) {
             socket.send(JSON.stringify({ type: "error", message: "You are not in a room" }));
             console.log(`Socket ${socket._socket.remoteAddress} tried to delete a room, but is not in a room.`);
-            return;
-        }
-
-        if (!getRoom(room)) {
-            socket.send(JSON.stringify({ type: "error", message: "Room does not exist" }));
-            console.log(`Socket ${socket._socket.remoteAddress} tried to delete room ${room}, but it does not exist.`);
             return;
         }
 
