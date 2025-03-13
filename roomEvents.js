@@ -8,9 +8,9 @@ const handleRoomEvents = (socket, data) => {
             return;
         }
 
-        let code = "" + Math.floor(Math.random() * 900000) + 100000;
+        let code = `${Math.floor(Math.random() * 900000) + 100000}`;
         while (getRoom(code)) {
-            code = "" + Math.floor(Math.random() * 900000) + 100000;
+            code = `${Math.floor(Math.random() * 900000) + 100000}`;
         }
 
         createRoom(code, socket);
