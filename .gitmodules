@@ -1,1 +1,4 @@
 
+[submodule "poker-backend"]
+	path = poker-backend
+	url = https://github.com/MakSobo80/poker-backend.git
