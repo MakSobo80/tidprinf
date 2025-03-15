@@ -1,6 +1,7 @@
 const WebSocket = require('ws');
 const {handleRoomEvents} = require("./roomEvents");
 const {removeMember} = require("./store");
+const {handleGameEvents} = require("./gameEvents");
 const wss = new WebSocket.Server({ port: 8080 });
 console.log("Server started on port 8080");
 
@@ -12,6 +13,9 @@ wss.on("connection", (socket) => {
         if (data.type.includes("room")) {
             handleRoomEvents(socket, data);
         } else {
+            if(handleGameEvents(socket, data)) {
+                return;
+            }
             socket.send(JSON.stringify({ type: "error", message: "Invalid message type" }));
         }
     });
