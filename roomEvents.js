@@ -52,13 +52,14 @@ const handleRoomEvents = (socket, data) => {
             return;
         }
 
-        if (isCreator(room, socket)) {
+        if (!isCreator(room, socket)) {
             socket.send(JSON.stringify({ type: "error", message: "Only the room creator can delete the room" }));
             console.log(`Socket ${socket._socket.remoteAddress} tried to delete room ${room}, but it is not the creator.`);
             return;
         }
 
         removeRoom(room);
+        socket.send(JSON.stringify({ type: "room-deleted" }));
         console.log(`Socket ${socket._socket.remoteAddress} deleted room ${room}.`);
     }
 }
