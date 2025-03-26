@@ -21,7 +21,11 @@ wss.on("connection", (socket) => {
     });
 
     socket.on("close", () => {
-        socket.send({ type: "disconnected", message: "Connection closed" });
+        try {
+            socket.send(JSON.stringify({ type: "disconnected", message: "Connection closed" }));
+        } catch (e) {
+            console.error(e);
+        }
         removeMember(socket);
         console.log(`Socket ${socket._socket.remoteAddress} disconnected.`);
     });
