@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 const {handleRoomEvents} = require("./roomEvents");
-const {removeMember} = require("./store");
+const {removeMember, getRoomCode} = require("./store");
 const {handleGameEvents} = require("./gameEvents");
 const wss = new WebSocket.Server({ port: 8080 });
 console.log("Server started on port 8080");
@@ -26,7 +26,10 @@ wss.on("connection", (socket) => {
         } catch (e) {
             console.error(e);
         }
-        removeMember(socket);
+
+        if(getRoomCode(socket)) {
+            removeMember(getRoomCode(socket), socket);
+        }
         console.log(`Socket ${socket._socket.remoteAddress} disconnected.`);
     });
 });
