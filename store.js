@@ -64,7 +64,7 @@ const getMembers = (code) => {
 }
 
 const isCreator = (member) => {
-    return rooms.find((v) => v.members[0] === member);
+    return !!rooms.find((v) => v.members[0] === member);
 }
 
 const startGame = (code) => {
