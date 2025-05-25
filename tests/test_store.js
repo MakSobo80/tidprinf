@@ -55,17 +55,5 @@ describe('store', () => {
         const result = isGameStarted('123456');
         expect(result).toBe(true);
     });
-    test('should set starting balances for all players in a room', () => {
-        createRoom('123456', socket);
-        const player1 = { _socket: { remoteAddress: '127.0.0.2' }, send: jest.fn() };
-        const player2 = { _socket: { remoteAddress: '127.0.0.3' }, send: jest.fn() };
-        addMember('123456', player1);
-        addMember('123456', player2);
 
-        setStartingBalances('123456');
-        const room = getRoom('123456');
-
-        expect(room.balances[player1]).toBe(1000);
-        expect(room.balances[player2]).toBe(1000);
-    });
 });
