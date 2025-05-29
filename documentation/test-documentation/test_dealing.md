@@ -1,6 +1,6 @@
 # `test_dealing.py`
 
-This file contains unit tests for the `deal_cards` function, which is responsible for distributing cards to players and the community in a Texas Hold'em game. The tests ensure that the function behaves correctly under various scenarios.
+This file contains unit tests for the `deal_cards` function, which is responsible for distributing cards to players. The tests ensure that the function behaves correctly under various scenarios.
 
 ## Dependencies
 
